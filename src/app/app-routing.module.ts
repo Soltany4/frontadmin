@@ -10,13 +10,6 @@ const routes: Routes = [{
       m => m.LoginModule
     )
 },
-{
-  path: '',
-  loadChildren: () =>
-    import('./signup/signup.module').then(
-      m => m.SignupModule
-    )
-},
 {path: 'dashboard',component: DashboardComponent,
 
 children: [

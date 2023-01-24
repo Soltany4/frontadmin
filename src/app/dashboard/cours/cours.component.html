@@ -1,32 +1,194 @@
 
 <div class="container-fluid page">
-  <div class="d-flex page__box p-3 mt-2">Cours</div>
+  <div class="d-flex page__box p-3 mt-2">Gestion Cours</div>
   <div class="page__content shadow p-3 position-relative">
-    <h2 class=" mt-5">Liste des cours</h2>
-    
-    <div class="page__content-data position-relative text-center">
-      <div class="mat-elevation-z8">
-        <div class="container">
-          <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th>Matière</th>
-              <th>Chapitre</th>
-              <th>Heurs</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let matiere of matieres">
-              <td><span>{{matiere.name}}</span></td>
-              <td><span (click)="OpenPdf()">{{matiere.cour}} </span></td>
-              <td><span>{{matiere.heurs}}</span></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        </div>
-        
-        
+    <div class="container">
+      <div class="border">
+        <button class="btn btn-md btn-success" (click)="open(content)">
+          <i class="fa fa-user"></i>New cour</button>
+      </div>
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Matières</th>
+          <th>Chapitre</th>
+          <th>N° Heures</th>
+
+          
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let cour of cours">
+          <td><span>{{cour.id}}</span></td>
+          <td><span>{{cour.name}}</span></td>
+          <td><span>{{cour.chaps}}</span></td>
+          <td><span>{{cour.nb_heure}}</span></td>
+
+          
+          <td>
+            <button class="btn btn-sm btn-info" (click)="openDetails(contentDetails, cour)">
+              <i class="fa fa-search"></i>Details</button>
+            <button class="btn btn-sm btn-warning" (click)="openEdit(contentEdit, cour)">
+              <i class="fa fa-edit"></i>Edit</button>
+            <button class="btn btn-sm btn-danger"(click)="openDelete(contentDelete, cour)" >
+              <i class="fa fa-remove"></i>Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  
 </div>
+<!--    ***********************************model for add cour ***************************************-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Cours</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+      <div class="form-group">
+        <label for="id">ID</label>
+        <div class="input-group">
+          <input id="id" class="form-control" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name">Matière</label>
+        <div class="input-group">
+          <input id="name" class="form-control" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chaps">Chapitre</label>
+        <div class="input-group">
+          <input id="chaps" class="form-control" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="nb_heure">N° Heures</label>
+        <div class="input-group">
+          <input id="nb_heure" class="form-control" >
+        </div>
+      </div>
+      
+      <div class="border text-center">
+        <button data-dismiss="modal" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--*********************************model for View cour ***********************************-->
+
+<ng-template #contentDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">View Cour</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form >
+      <div class="form-group">
+        <label for="id">ID</label>
+        <div class="input-group">
+          <input id="id2" class="form-control readonly " >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name">Matière</label>
+        <div class="input-group">
+          <input id="name2" class="form-control readonly " >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chaps">Chapitre</label>
+        <div class="input-group">
+          <input id="chaps2" class="form-control readonly " >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="nb_heure">N° Heures</label>
+        <div class="input-group">
+          <input id="nb_heure2" class="form-control readonly " >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--***********************Edit Cour Modal****************************************-->
+
+<ng-template #contentEdit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Cour</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  [formGroup]="editForm" novalidate>
+      <div class="form-group">
+        <label for="id" >ID</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="id">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name" >Matière</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="name" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chaps"  >Chapitre</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="chaps" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="nb_heure" >N° Heure</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="nb_heure">
+        </div>
+      </div>
+      
+      <div class="border text-center">
+        <button data-dismiss="modal" class="btn btn-info" (click)="onSave()" >Save changes</button>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--***************************************Delete User Modal**************************************-->
+<ng-template #contentDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h2>vous voulez vraiment supprimer cour ?</h2>
+    <div class="border text-center"> 
+      <button data-dismiss="modal" class="btn btn-danger" (click)="onDelete()">Yes, Delete!</button> 
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>

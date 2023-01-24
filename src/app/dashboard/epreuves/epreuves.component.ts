@@ -1,18 +1,14 @@
-
-
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {
-  LinkAnnotationService, BookmarkViewService, MagnificationService, ThumbnailViewService,
-  ToolbarService, NavigationService, TextSearchService, TextSelectionService, PrintService, AnnotationService
-} from '@syncfusion/ej2-angular-pdfviewer';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
-export class Epreuves {
+export class Epreuve {
   constructor(
     public id: string,
-    public type: string,
-    public note: string,
-    public matiere: string
+    public name: string,
+    public note: any,
+
   ) {
   }
 }
@@ -21,42 +17,109 @@ export class Epreuves {
   selector: 'app-epreuves',
   templateUrl: './epreuves.component.html',
   styleUrls: ['./epreuves.component.css'],
-  providers: [LinkAnnotationService, BookmarkViewService, MagnificationService, 
-    ThumbnailViewService, ToolbarService, NavigationService, TextSearchService, TextSelectionService, PrintService, AnnotationService]
+
 })
 export class EpreuvesComponent implements OnInit {
 
-  epreuves: Epreuves[]|any;
+  epreuves: Epreuve[];
+  closeResult : string;
+  editForm : FormGroup;
+  deleteId : string;
 
-  constructor(private httpClient: HttpClient){}
+  constructor(private httpClient: HttpClient, private modalService: NgbModal, private fb:FormBuilder ){}
 
   ngOnInit(): void {
     this.getEpreuves();
+    this.editForm = this.fb.group({
+      id: [''],
+      name: [''],
+      note: [],
+
+    } );
   }
 
   getEpreuves(){
 
-    this.httpClient.get<any>('http://localhost:8888/epreuves').subscribe(
+    this.httpClient.get<any>('http://localhost:8888/epreuve').subscribe(
     response => {
       console.log(response);
       this.epreuves = response;
     }
   );
   }
-
-  OpenPdf()
-  {
-    
-  var ws = window.open(this.epreuves.cour, '_blank', "width=800,height=800,location=no,menubar=no,status=no,titilebar=no,resizable=no")
-                //Adding script and CSS files
-                ws!.document.write('<!DOCTYPE html><html><head><title>PdfViewer</title><link href = "https://cdn.syncfusion.com/ej2/17.2.41/material.css" rel = "stylesheet"><script src="https://cdn.syncfusion.com/js/assets/external/jquery-3.1.1.min.js"><\/script><script src="https://cdn.syncfusion.com/ej2/17.2.41/dist/ej2.min.js"><\/script><\/head><body>');
-                //Div to render PDF Viewer
-                ws!.document.write('<div style="width:100%;min-height:570px"><div id="PdfViewer"></div><\/div>')
-                //Initializes the PDF Viewer
-                ws!.document.write("<script> var pdfviewer = new ej.pdfviewer.PdfViewer({documentPath:'PDF_Succinctly.pdf',serviceUrl: 'https://ej2services.syncfusion.com/production/web-services/api/pdfviewer'});pdfviewer.appendTo('#PdfViewer');<\/script>")
-               
-                ws!.document.close();    
+  open(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
+  onSubmit(f: NgForm) {
+    const url = 'http://localhost:8888/epreuves/addnew';
+    this.httpClient.post(url, f.value)
+      .subscribe((result) => {
+        this.ngOnInit(); //reload the table
+      });
+    this.modalService.dismissAll(); //dismiss the modal
+  }
+
+  openDetails(targetModal:any, epreuve: Epreuve) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static',
+     size: 'lg'
+   });
+    document.getElementById('id2').setAttribute('value', epreuve.id);
+    document.getElementById('name2').setAttribute('value', epreuve.name);
+    document.getElementById('note2').setAttribute('value', epreuve.note);
+ }
+  openEdit(targetModal:any, epreuve: Epreuve) {
+  this.modalService.open(targetModal, {
+   centered: true,
+   backdrop: 'static',
+   size: 'lg'
+ });
+ this.editForm.patchValue( {
+  id: epreuve.id, 
+  name: epreuve.name,
+  note: epreuve.note,
+
+});
 }
 
+onSave() {
+  const editURL = 'http://localhost:8888/epreuve/' + this.editForm.value.id + '/edit';
+  console.log(this.editForm.value);
+  this.httpClient.put(editURL, this.editForm.value)
+    .subscribe((results) => {
+      this.ngOnInit();
+      this.modalService.dismissAll();
+    });
+}
+openDelete(targetModal:any, epreuve: Epreuve) {
+  this.deleteId = epreuve.id;
+  this.modalService.open(targetModal, {
+    backdrop: 'static',
+    size: 'lg'
+  });
+}
+onDelete() {
+  const deleteURL = 'http://localhost:8888/epeuve/' + this.deleteId + '/delete';
+  this.httpClient.delete(deleteURL)
+    .subscribe((results) => {
+      this.ngOnInit();
+      this.modalService.dismissAll();
+    });
+}
+}

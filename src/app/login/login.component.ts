@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+
 import { Router } from '@angular/router';
 
 
@@ -21,13 +21,6 @@ export class LoginComponent implements OnInit {
    
   }
  
-
-  sbtn1(){
-    this._route.navigate(['signup']);
-    $('.form-box').css('display', 'block');
-    $('.form-box').css('display', 'none');
-
-  }
 
   public login1(email: string, password: string){
     this._route.navigate(['dashboard']);

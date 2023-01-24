@@ -10,11 +10,13 @@ mat-drawer {
   width: 260px;
 }
 mat-drawer-container {
+  
   height: 100%;
 }
 
 mat-drawer {
-  background: #012248;
+  background: #F6F6F6;
+  border: 5px solid rgba(194, 138, 17, 0.877);
 }
 
 :host .mat-icon {
@@ -27,7 +29,7 @@ mat-drawer {
  
 }
 .logo img {
-  width: 200px;
+  width: 100px;
 }
 
 .mat-divider {
@@ -36,14 +38,14 @@ mat-drawer {
 }
 
 a{
-  color: #94a3b8 !important;
+  color: #717d8f !important;
   font-size: 1rem;
   height: 44px !important;
   width: 90%;
   margin-bottom: 10px;
   margin-top: 10px;
   margin-left: 10px;
-  border: 1px solid rgb(240, 240, 245, 0.5);
+  border: 1px solid rgba(194, 138, 17, 0.877);
   border-radius: 5px;
 
 
@@ -55,7 +57,7 @@ a:hover, a:active {
   margin: 0 20px;
 }
 h4 {
-  color: #94a3b8;
+  color: #717d8f;
   font-size: 1.1rem;
   font-weight: 150;
   letter-spacing: 1px;
@@ -87,17 +89,18 @@ button {
     vertical-align: middle;
 }
 h2{
-    color: #c78409 ;
+    color: #081529 ;
     font-size: 2rem bold;
     font-weight: bold;
     letter-spacing: 1px;
     padding-left: 60px;
+    margin-bottom: 50px;
 }
 
 .page {
   color: white;
   padding: 0 1rem;
-  background: #f1f5f9;
+  background: #f7f7f7;
   height: 100%;
 }
 /*# sourceMappingURL=sidenav.component.css.map */

@@ -5,6 +5,7 @@ import { CoursRoutingModule } from './cours-routing.module';
 import { CoursComponent } from './cours.component';
 import {MatTableModule} from '@angular/material/table';
 import { MatPaginatorModule} from '@angular/material/paginator';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,10 @@ import { MatPaginatorModule} from '@angular/material/paginator';
     CommonModule,
     CoursRoutingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    FormsModule
+
   ]
 })
 export class CoursModule { }

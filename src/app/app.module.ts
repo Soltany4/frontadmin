@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { SignupComponent } from './signup/signup.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { HeaderComponent } from './dashboard/header/header.component';
 
 import { HomeComponent } from './dashboard/home/home.component';
@@ -21,6 +21,8 @@ import { MatTableModule} from '@angular/material/table';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import { EmploisComponent } from './dashboard/emplois/emplois.component';
 import { PdfViewerModule } from '@syncfusion/ej2-angular-pdfviewer';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 
@@ -28,7 +30,6 @@ import { PdfViewerModule } from '@syncfusion/ej2-angular-pdfviewer';
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent,
     DashboardComponent,
     HeaderComponent,
     HomeComponent,
@@ -53,7 +54,13 @@ import { PdfViewerModule } from '@syncfusion/ej2-angular-pdfviewer';
     MatTableModule,
     MatPaginatorModule,
     HttpClientModule,
-    PdfViewerModule
+    PdfViewerModule,
+    FormsModule,
+    NgbModule,
+    ReactiveFormsModule
+
+ 
+
   ],
   providers: [],
   bootstrap: [AppComponent]

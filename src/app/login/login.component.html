@@ -1,6 +1,8 @@
 <div class="container">
-    <form  class="form-box">
-        <h3>Login</h3>
+    <form  class="form-box ">
+        <div class="text-center">
+          <h3>Login</h3>
+        </div>
 
         <div class="form-group">
             <label> Email </label>
@@ -11,13 +13,11 @@
             <label> Password</label>
             <input type="password" formControlName="password" class="form-control mb-3 mt-3" name="password" [(ngModel)]="password" placeholder="Enter Password"/>
         </div>
-
-        <span>Create Parent Account   </span>
-        <br/>
-        <a routerLink="signup" (click)="sbtn1()" class="link"> Singup </a>
         <br/>
         <br/>
-        <button type="submit" class="btn btn-success" routerLink="dashboard" (click)="login1(email, password)">Login</button>
+        <div class="text-center">
+           <button type="submit" class="btn btn-success" routerLink="dashboard" (click)="login1(email, password)">Login</button>
+        </div>
     </form>
 
 </div>

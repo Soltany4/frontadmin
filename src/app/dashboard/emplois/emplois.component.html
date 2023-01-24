@@ -1,18 +1,146 @@
 
-  <div class="container-fluid page">
-    <div class="d-flex page__box p-3 mt-2">Emplois</div>
-    <div class="page__content shadow p-3 position-relative">
-      &nbsp; &nbsp; 
-      <tr>
-        <th>Année Scolaire :</th> &nbsp; &nbsp; 
-        <td>2022/2023</td> &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; 
-        <th>Classe :</th> &nbsp; &nbsp; 
-        <td *ngFor="let user of users"><span>{{user.classe}}</span></td> &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; 
-        <th>Date :</th> &nbsp; &nbsp;  
-        <td>{{todayDate | date:'fullDate'}} | {{todayDate | date:'shortTime'}}</td>
-     </tr> 
-      <div class="page__content-data position-absolute text-center" *ngFor="let user of users">
-        <img src={{user.emplois}}  width="150%" height="650">
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Gestion Emplois</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div class="container">
+      <div class="border">
+        <button class="btn btn-md btn-success" (click)="open(content)">
+          <i class="fa fa-user"></i>New Emplois</button>
       </div>
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>ImageUrl</th>
+          
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let emplois of emplois">
+          <td><span>{{emplois.id}}</span></td>
+          <td><span>{{emplois.imageUrl}}</span></td>
+
+          
+          <td>
+            <button class="btn btn-sm btn-info" (click)="openDetails(contentDetails, emplois)">
+              <i class="fa fa-search"></i>Details</button>
+            <button class="btn btn-sm btn-warning" (click)="openEdit(contentEdit, emplois)">
+              <i class="fa fa-edit"></i>Edit</button>
+            <button class="btn btn-sm btn-danger"(click)="openDelete(contentDelete, emplois)" >
+              <i class="fa fa-remove"></i>Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  
+</div>
+<!--    ***********************************model for add emplois ***************************************-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Emplois</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+      <div class="form-group">
+        <label for="imageUrl">ImageUrl</label>
+        <div class="input-group">
+          <input id="imageUrl" class="form-control" >
+        </div>
+      </div>
+      <div class="border text-center">
+        <button data-dismiss="modal" class="btn btn-info">Submit</button>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--*********************************model for View emplois ***********************************-->
+
+<ng-template #contentDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">View Emplois</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form >
+      <div class="form-group">
+        <label for="id">ID</label>
+        <div class="input-group">
+          <input id="id2" class="form-control readonly " >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="imageUrl">ImageUrl</label>
+        <div class="input-group">
+          <input id="imageUrl2" class="form-control readonly " >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--***********************Edit emplois Modal****************************************-->
+
+<ng-template #contentEdit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Emplois</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  [formGroup]="editForm" novalidate>
+      <div class="form-group">
+        <label for="firstname" >ID</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="id">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastname" >ImageUrl</label>
+        <div class="input-group">
+          <input  class="form-control" formControlName="imageUrl" >
+        </div>
+      </div>
+      
+      <div class="border text-center">
+        <button data-dismiss="modal" class="btn btn-info" (click)="onSave()" >Save changes</button>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--***************************************Delete emplois Modal**************************************-->
+<ng-template #contentDelete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h2>Vous voulez vraiment supprimer emplois ?</h2>
+    <div class="border text-center"> 
+      <button data-dismiss="modal" class="btn btn-danger" (click)="onDelete()">Yes, Delete!</button> 
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
